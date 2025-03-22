@@ -1,0 +1,166 @@
+<!-- This is working code -->
+
+
+<% layout("layouts/boilerplate.ejs") %>
+<script>
+    // we define these variables so that we can access them in map.js 
+    let mapKey = "<%= process.env.MAP_API_KEY %>";
+    let place = "<%= listing.location %>";
+    let country = "<%= listing.country %>";
+    let address = place+", "+country;
+</script>
+
+<div>
+    <p class="text-center" id="show-heading-styling"><%= listing.title %></p>
+    <div class="d-flex justify-content-center mb-5" id="show-img-div">
+        <img src="<%= listing.image.url %>" alt="listing image" id="show-image" class="">
+    </div>
+    <div class="d-flex justify-content-center" id="show-price-owner-container">
+        <div class="d-flex justify-content-between mt-5 mb-5 show-content">
+            <div class="d-flex justify-content-center align-items-center show-price-owner-box">
+                <p><b>Hosted by @<%= listing.owner.username %></b></p>
+            </div>
+            <div class="justify-content-center align-items-center d-flex show-price-owner-box">
+                <p><b>&#8377; <%= listing.price.toLocaleString("en-IN") %></b></p>
+            </div>
+        </div>
+    </div>  
+    <div class="d-flex justify-content-center" id="show-price-owner-container">
+        <div class="show-content d-flex justify-content-between align-items-center">
+            <div class="show-location-category-custom">
+                <p><b>Category</b></p>
+                <p><%= listing.category %></p>
+            </div>
+            <div class="show-location-category-custom">
+                <p><b>Location</b></p>
+                <p><%= listing.location %>,&nbsp;<%= listing.country %></p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <span class="text-center mt-5 mb-5 truncated" id="description"><b><%= listing.description %></b></span>
+    <button id="toggleButton" class="toggle-button">Show more</button>
+    <hr><br>
+    <div id="show-price-owner-container" class="mt-3">
+        <div class="show-content">
+            <div class="d-flex justify-content-between align-items-center">
+                <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+                <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark">Edit</a>
+                <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
+                    <button class="btn btn-dark">Delete</button>
+                </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="container">
+            <div class="row">
+              <div class="col-lg-8 col-md-10 col-sm-12 mx-auto" id="review-show">
+                <% if(currUser) { %>
+                    <%
+                      // Check if the current user has already submitted a review
+                      let hasReviewed = false;
+                      if(listing.reviews && listing.reviews.length > 0) {
+                        for(let review of listing.reviews) {
+                          if(review.author && review.author._id && currUser._id.equals(review.author._id)) {
+                            hasReviewed = true;
+                            break;
+                          }
+                        }
+                      }
+                    %>
+                    
+                    <div class="my-4">
+                      <% if(!hasReviewed) { %>
+                        <h3>Leave a review</h3>
+                        <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation mt-3">
+                        <div class="mb-3">
+                          <label for="rating" class="form-label">Rating</label>
+                          <!--This is starability code-->
+                          <fieldset class="starability-slot">
+                            <!--This is by default value of rating i.e., 1-->
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                          </fieldset>
+                          <!--Starability code ends here-->
+                        </div>
+            
+                        <div class="mb-3">
+                          <label for="comment" class="form-label">Comment</label>
+                          <textarea name="review[comment]" rows="5" id="comment" class="form-control" required></textarea>
+                          <div class="invalid-feedback">Please add some comments</div>
+                        </div>
+                        
+                        <button class="btn btn-outline-dark mb-4">Submit</button>
+                      </form>
+                      <% } %>
+                    </div>
+                  <% } %>                
+                <% if(listing.reviews.length!=0) { %>
+                  <div class="my-4">
+                    <h4>All Reviews</h4>
+                    <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+                      <% for(review of listing.reviews) {%>
+                        <div class="col">
+                          <div class="card h-100 card-border all-reviews-show" id="user-reviews">
+                            <div class="card-body">
+                              <h5 class="card-title"><b>@<%= review.author.username %></b></h5>
+                              <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                              <p class="card-text"><%= review.comment %></p>
+                              <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                                <form action="/listings/<%=listing._id%>/reviews/<%=review._id%>/?_method=DELETE" method="post">
+                                  <button class="btn btn-sm btn-dark">Delete</button>
+                                </form>
+                              <% } %>
+                            </div>
+                          </div>
+                        </div>
+                      <% } %>
+                    </div>
+                  </div>
+                <% } %>
+                
+                <div class="my-4">
+                  <h3>You'll be here</h3>
+                  <div id="map" class="w-100 mt-3" style="min-height: 300px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="/js/map.js"></script>
+    <script>
+            const description = document.getElementById('description');
+            const toggleButton = document.getElementById('toggleButton');
+            
+            // Set initial state
+            let isExpanded = false;
+            
+            // Function to toggle expansion
+            function toggleExpand() {
+                isExpanded = !isExpanded;
+                
+                if (isExpanded) {
+                    description.classList.remove('truncated');
+                    toggleButton.textContent = 'Show less';
+                } else {
+                    description.classList.add('truncated');
+                    toggleButton.textContent = 'Show more';
+                }
+            }
+            
+            // Add click event listener
+            toggleButton.addEventListener('click', toggleExpand);
+    </script>
+</div>

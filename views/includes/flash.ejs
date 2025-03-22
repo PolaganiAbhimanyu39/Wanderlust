@@ -1,0 +1,19 @@
+<% if(success && success.length) { %>
+    <!-- here success is passed as a res.locals.success and it's an empty array if we don't pass any value
+     else it's length is not zero  -->
+    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
+        <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+    </div>
+<% } %>
+
+<% if(error && error.length) { %>
+        <!-- here error is passed as a res.locals.error and it's an empty array if we don't pass any value
+         else it's length is not zero  -->
+        <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
+            <%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+        </div>
+<% } %>

@@ -1,0 +1,193 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+  <body>
+    <div class="filters d-flex mb-4">
+      <div class="d-flex" id="scrollContainer">
+        <div id="s-left">
+          <span class="material-symbols-outlined swiper">
+            chevron_left
+          </span>
+        </div>
+        <div class="filterSet d-flex">
+          <div class="filter">
+            <a href="?category=Farms" class="icon">
+              <span class="material-symbols-outlined">
+                agriculture
+              </span>
+            </a>
+            Farms
+          </div>
+          <div class="filter">
+            <a href="?category=Rooms" class="icon">
+              <span class="material-symbols-outlined">
+                bed
+              </span>
+            </a>
+            Rooms
+          </div>
+          <div class="filter">
+            <a href="?category=Favourite" class="icon">
+              <span class="material-symbols-outlined">
+                editor_choice
+              </span>
+            </a>
+            Favourite
+          </div>
+          <div class="filter">
+            <a href="?category=Luxury" class="icon">
+              <span class="material-symbols-outlined">
+                concierge
+              </span>
+            </a>
+            Luxury
+          </div>
+          <div class="filter">
+            <a href="?category=Pools" class="icon">
+              <span class="material-symbols-outlined">
+                pool
+              </span>
+            </a>
+            Pools
+          </div>
+          <div class="filter">
+            <a href="?category=Castle" class="icon">
+              <span class="material-symbols-outlined">
+                castle
+              </span>
+            </a>
+            Castle
+          </div>
+          <div class="filter">
+            <a href="?category=Trekking" class="icon">
+              <span class="material-symbols-outlined">
+                landscape
+              </span>
+            </a>
+            Trekking
+          </div>
+          <div class="filter">
+            <a href="?category=Surfing" class="icon">
+              <span class="material-symbols-outlined">
+                surfing
+              </span>
+            </a>
+            Surfing
+          </div>
+          <div class="filter">
+            <a href="?category=Farms" class="icon">
+              <span class="material-symbols-outlined">
+                agriculture
+              </span>
+            </a>
+            Farms
+          </div>
+          <div class="filter">
+            <a href="?category=Rooms" class="icon">
+              <span class="material-symbols-outlined">
+                bed
+              </span>
+            </a>
+            Rooms
+          </div>
+          <div class="filter">
+            <a href="?category=Favourite" class="icon">
+              <span class="material-symbols-outlined">
+                editor_choice
+              </span>
+            </a>
+            Favourite
+          </div>
+          <div class="filter">
+            <a href="?category=Luxury" class="icon">
+              <span class="material-symbols-outlined">
+                concierge
+              </span>
+            </a>
+            Luxury
+          </div>
+          <div class="filter">
+            <a href="?category=Pools" class="icon">
+              <span class="material-symbols-outlined">
+                pool
+              </span>
+            </a>
+            Pools
+          </div>
+          <div class="filter">
+            <a href="?category=Trekking" class="icon">
+              <span class="material-symbols-outlined">
+                landscape
+              </span>
+            </a>
+            Trekking
+          </div>
+          <div class="filter">
+            <a href="?category=Surfing" class="icon">
+              <span class="material-symbols-outlined">
+                surfing
+              </span>
+            </a>
+            Surfing
+          </div>
+        </div>
+        <div id="s-right">
+          <span class="material-symbols-outlined swiper s-right">
+            chevron_right
+          </span>
+        </div>
+      </div>
+      <div class="tax-toggle mt-3 ms-auto">
+        <div class="form-check form-switch form-check-reverse">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse">
+          <label class="form-check-label" for="flexSwitchCheckReverse">Display total after taxes</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- <form action="/listings/new" method="get">
+        <button>Create New Listing</button>
+    </form> -->
+    <div class="row-cols-xs-1 row row-cols-lg-3 row-cols-md-2 row-cols-sm-1" id="listingsCOntainer">
+      <% for(let listing of allListings){ %>
+        <a href="/listings/<%= listing._id %>" class="listing-link">
+          <div class="card col">
+            <img src=<%=listing.image.url %>
+            class="card-img-top"
+            alt="listing_image"
+            style="height: 20rem;">
+
+            <div class="card-img-overlay"></div>
+
+            <div class="card-body">
+              <p class="card-text">
+                <b>
+                  <%= listing.title %>
+                </b>
+              </p>
+              <p class="card-text price"> &#8377; <%= listing.price.toLocaleString("en-IN") %> /night </p>
+            </div>
+          </div>
+        </a>
+        <% } %>
+    </div>
+    <div class="d-flex mobile-nav sticky-bottom">
+      <div>
+      <a class="nav-link" href="/listings/new">Add new listing</a>
+      </div>
+      <% if(!currUser) {%>
+      <div>
+        <a class="nav-link active" aria-current="page" href="/login"><b>Login</b></a>
+      </div>
+      <div>
+        <a class="nav-link" href="/signup"><b>Sign In</b></a>
+      </div>
+        <% } %>
+          <% if(currUser) {%>
+          <div>
+            <a class="nav-link" href="/logout"><b>Logout</b></a>
+          </div>
+            <% } %>
+    </div>
+  </body>
+
+  <script src="/js/taxes.js"></script>
