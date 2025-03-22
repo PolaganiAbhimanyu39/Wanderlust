@@ -98,6 +98,11 @@ app.use("/",userRouter);
 
 // What this does is "*" -> means to all routes,We come here when none of the above routes are matched
 //  ".all" means all methods like(get,put,delete,patch,etc)
+
+app.get("/",(req,res)=>{
+    res.redirect("/listings");
+})
+
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"Page Not Found"));
 })
