@@ -32,7 +32,8 @@ app.engine("ejs",ejsMate);
 
 const port = "3000";
 
-const dbUrl = process.env.ATLAS_URL;
+// When shipping to production replace dburl to process.env.ATLAS_URL
+const dbUrl = "mongodb://127.0.0.1:27017/wanderlust";
 main()
 .then(()=>{
     console.log("Db is running");
