@@ -63,11 +63,3 @@ Passport.js
 Express Sessions
 
 Password hashing and secure authentication
-
-Deployment
-
-Frontend deployed on Netlify
-
-Backend deployed on Render / Railway / similar platform
-
-MongoDB hosted on MongoDB Atlas
